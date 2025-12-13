@@ -66,8 +66,10 @@ public class PlannedOperationController {
         // Campos que vienen del body
         operation.setDescription(input.getDescription());
         operation.setAccountId(input.getAccountId());
-        operation.setDueDate(input.getDueDate());
+        //operation.setDueDate(input.getDueDate());
         operation.setProjectedValue(input.getProjectedValue());
+        operation.setAmount(input.getAmount());
+        operation.setTotalProjectedValue(input.getTotalProjectedValue());
 
         // Fecha de creación: si no viene, usamos hoy
         if (input.getCreationDate() != null) {

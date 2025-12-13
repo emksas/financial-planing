@@ -1,6 +1,7 @@
 package com.sena.rsr.emk.financial_planning_service.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,6 +40,12 @@ public class PlannedOperation {
     @Column(name = "\"isRepetitive\"", nullable = false)
     private Boolean repetitive; // "isRepetitive"
 
-    @Column(name = "projected_value")
+    @Column(name = "projected_unit_value")
     private Double projectedValue; // projected_value
+
+    @Column(name = "amount")
+    private Integer amount; // amount
+
+    @Column(name = "total_projected_value")
+    private Double totalProjectedValue; // total_projected_value
 }
