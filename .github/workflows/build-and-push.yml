@@ -36,4 +36,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/emksas/financialPlaning:${{ steps.vars.outputs.tag }}
+          tags: ghcr.io/emksas/financial-planing:${{ steps.vars.outputs.tag }}
