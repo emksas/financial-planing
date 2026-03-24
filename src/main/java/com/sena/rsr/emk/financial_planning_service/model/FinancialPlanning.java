@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "planificacionfinanciera", schema = "public")
-@IdClass(FinancialPlanningId.class)
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,9 +17,9 @@ public class FinancialPlanning {
 
     @Id
     @Column(name = "idplanificacionfinanciera", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer planId;   // columna: idplanificacionfinanciera
 
-    @Id
     @Column(name = "usuario_cedula", nullable = false)
     private Integer userId;   // columna: usuario_cedula (FK a usuario.cedula)
 

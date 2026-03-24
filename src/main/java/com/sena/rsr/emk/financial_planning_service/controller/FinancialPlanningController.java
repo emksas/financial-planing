@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sena.rsr.emk.financial_planning_service.model.FinancialPlanning;
-import com.sena.rsr.emk.financial_planning_service.model.FinancialPlanningId;
 import com.sena.rsr.emk.financial_planning_service.repository.FinancialPlanningRepository;
 
 import java.util.List;
@@ -41,12 +40,8 @@ public class FinancialPlanningController {
     public FinancialPlanning getOne(
             @PathVariable Integer userId,
             @PathVariable Integer planId) {
-        FinancialPlanningId id = new FinancialPlanningId();
-        id.setPlanId(planId);
-        id.setUserId(userId);
 
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial planning not found"));
+        return repository.findByUserIdAndPlanId(userId, planId);
     }
 
     // 🔹 POST /api/financial-planning
@@ -67,6 +62,9 @@ public class FinancialPlanningController {
 
         // Opcional: validar campos obligatorios aquí
 
+        System.out.println(
+                "Creando planificación para userId=" + planning.getUserId() + " con planId=" + planning.getPlanId());
+        System.out.println("Datos recibidos: " + planning);
         FinancialPlanning saved = repository.save(planning);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
@@ -78,12 +76,8 @@ public class FinancialPlanningController {
             @PathVariable Integer userId,
             @PathVariable Integer planId,
             @RequestBody FinancialPlanning updatedData) {
-        FinancialPlanningId id = new FinancialPlanningId();
-        id.setPlanId(planId);
-        id.setUserId(userId);
 
-        FinancialPlanning existing = repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial planning not found"));
+        FinancialPlanning existing = repository.findByUserIdAndPlanId(userId, planId);
 
         // Solo actualizamos los campos que tenga sentido modificar
         existing.setDescription(updatedData.getDescription());
@@ -102,15 +96,13 @@ public class FinancialPlanningController {
     public void delete(
             @PathVariable Integer userId,
             @PathVariable Integer planId) {
-        FinancialPlanningId id = new FinancialPlanningId();
-        id.setPlanId(planId);
-        id.setUserId(userId);
 
-        if (!repository.existsById(id)) {
+        FinancialPlanning planning = repository.findByUserIdAndPlanId(userId, planId);
+        if (planning == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial planning not found");
         }
 
-        repository.deleteById(id);
+        repository.delete(planning);
     }
 
 }
