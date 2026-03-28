@@ -19,7 +19,7 @@ import lombok.Setter;
 public class AccountingAccount {
 
     @Id
-    @Column(name = "idcuentacontable", nullable = false)
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

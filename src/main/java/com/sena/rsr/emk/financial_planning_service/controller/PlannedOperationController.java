@@ -71,6 +71,9 @@ public class PlannedOperationController {
         operation.setAmount(input.getAmount());
         operation.setTotalProjectedValue(input.getTotalProjectedValue());
 
+        System.out.println("Planned operation: ");
+        System.out.println(operation);
+
         // Fecha de creación: si no viene, usamos hoy
         if (input.getCreationDate() != null) {
             operation.setCreationDate(input.getCreationDate());
