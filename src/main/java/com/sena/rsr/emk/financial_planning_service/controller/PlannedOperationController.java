@@ -45,6 +45,7 @@ public class PlannedOperationController {
     // Crea una nueva operación para ese usuario y esa planificación
     //
     // Body (JSON, sin necesidad de enviar userId ni planificationId):
+    
     // {
     // "description": "...",
     // "accountId": 10,
