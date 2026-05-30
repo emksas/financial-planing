@@ -8,33 +8,33 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "planificacionfinanciera", schema = "public")
-@IdClass(FinancialPlanningId.class)
+@Table(name = "planificacion_financiera", schema = "public")
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class FinancialPlanning {
 
     @Id
-    @Column(name = "idplanificacionfinanciera", nullable = false)
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer planId;   // columna: idplanificacionfinanciera
 
-    @Id
     @Column(name = "usuario_cedula", nullable = false)
     private Integer userId;   // columna: usuario_cedula (FK a usuario.cedula)
 
     @Column(name = "descripcion", length = 45)
     private String description;   // descripcion
 
-    @Column(name = "nombredelplan", length = 45)
+    @Column(name = "nombre_del_plan", length = 45)
     private String planName;      // nombredelplan
 
-    @Column(name = "valorproyectado")
+    @Column(name = "valor_proyectado")
     private Double projectedValue;   // valorproyectado
 
-    @Column(name = "fechaproyectada", nullable = false)
+    @Column(name = "fecha_proyectada", nullable = false)
     private LocalDateTime projectedDate; // fechaproyectada
 
-    @Column(name = "proyectopersonal")
+    @Column(name = "proyecto_personal")
     private Boolean personalProject; // proyectopersonal
 }

@@ -37,3 +37,12 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/emksas/financial-planing:${{ steps.vars.outputs.tag }}
+
+      - name: Trigger deploy (compose repo)
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DEPLOY_TRIGGER_TOKEN }}
+          repository: emksas/<REPO_COMPOSE>
+          event-type: deploy
+          client-payload: |
+            {"branch":"${{ github.ref_name }}","service":"${{ github.repository }}"}

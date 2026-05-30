@@ -45,6 +45,7 @@ public class PlannedOperationController {
     // Crea una nueva operación para ese usuario y esa planificación
     //
     // Body (JSON, sin necesidad de enviar userId ni planificationId):
+    
     // {
     // "description": "...",
     // "accountId": 10,
@@ -70,6 +71,9 @@ public class PlannedOperationController {
         operation.setProjectedValue(input.getProjectedValue());
         operation.setAmount(input.getAmount());
         operation.setTotalProjectedValue(input.getTotalProjectedValue());
+
+        System.out.println("Planned operation: ");
+        System.out.println(operation);
 
         // Fecha de creación: si no viene, usamos hoy
         if (input.getCreationDate() != null) {
