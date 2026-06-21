@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class AccountingAccount {
 
     @Id
@@ -26,9 +28,9 @@ public class AccountingAccount {
     @Column(name = "descripcion")
     private String description;
 
-    @Column(name = "userId")
+    @Column(name = "`userId`")
     private Integer userId; 
     
-    @Column(name="esProyeccion")
+    @Column(name="`esProyeccion`")
     private boolean isProjection; 
 }
