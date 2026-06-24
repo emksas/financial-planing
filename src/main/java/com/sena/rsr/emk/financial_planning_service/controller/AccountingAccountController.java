@@ -34,7 +34,7 @@ public class AccountingAccountController {
     @PostMapping("/")
     public ResponseEntity<AccountingAccount> create(@RequestBody AccountingAccount accountingAccount) {
         AccountingAccount saved = this.repository.save(accountingAccount);
-        return new ResponseEntity<AccountingAccount>(saved, HttpStatus.CREATED);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
