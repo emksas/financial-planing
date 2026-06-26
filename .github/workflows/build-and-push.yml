@@ -2,7 +2,8 @@ name: Build & Push Image
 
 on:
   push:
-    branches: [ "develop", "main" ]
+    branches: [ "main", "master", "develop" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,7 +19,7 @@ jobs:
       - name: Set image tag
         id: vars
         run: |
-          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+          if [ "${GITHUB_REF_NAME}" = "main" ] || [ "${GITHUB_REF_NAME}" = "master" ]; then
             echo "tag=prod-latest" >> $GITHUB_OUTPUT
           else
             echo "tag=develop-latest" >> $GITHUB_OUTPUT
@@ -35,14 +36,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: Dockerfile
           push: true
-          tags: ghcr.io/emksas/financial-planing:${{ steps.vars.outputs.tag }}
-
-      - name: Trigger deploy (compose repo)
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.DEPLOY_TRIGGER_TOKEN }}
-          repository: emksas/<REPO_COMPOSE>
-          event-type: deploy
-          client-payload: |
-            {"branch":"${{ github.ref_name }}","service":"${{ github.repository }}"}
+          tags: |
+            ghcr.io/emksas/financial-planing:${{ steps.vars.outputs.tag }}
+            ghcr.io/emksas/financial-planing:${{ github.sha }}
