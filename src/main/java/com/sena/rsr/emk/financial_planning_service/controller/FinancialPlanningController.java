@@ -6,18 +6,26 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sena.rsr.emk.financial_planning_service.model.FinancialPlanning;
+import com.sena.rsr.emk.financial_planning_service.model.FinancialPlanningDTO;
+import com.sena.rsr.emk.financial_planning_service.model.PlannedOperation;
 import com.sena.rsr.emk.financial_planning_service.repository.FinancialPlanningRepository;
+import com.sena.rsr.emk.financial_planning_service.repository.PlannedOperationRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/financial-planning")
 public class FinancialPlanningController {
 
     private final FinancialPlanningRepository repository;
+    private final PlannedOperationRepository plannedOperationRepository;
 
-    public FinancialPlanningController(FinancialPlanningRepository repository) {
+    public FinancialPlanningController(
+            FinancialPlanningRepository repository,
+            PlannedOperationRepository plannedOperationRepository) {
         this.repository = repository;
+        this.plannedOperationRepository = plannedOperationRepository;
     }
 
     // 🔹 GET /api/financial-planning
@@ -30,8 +38,25 @@ public class FinancialPlanningController {
     // 🔹 GET /api/financial-planning/user/{userId}
     // Lista todas las planificaciones de un usuario
     @GetMapping("/user/{userId}")
-    public List<FinancialPlanning> getByUser(@PathVariable Integer userId) {
-        return repository.findByUserId(userId);
+    public List<FinancialPlanningDTO> getByUser(@PathVariable Integer userId) {
+        List<FinancialPlanning> allPlannings = repository.findByUserId(userId);
+        return allPlannings.stream().map( planning -> {
+        
+            List<PlannedOperation> operations = plannedOperationRepository.findByUserIdAndPlanificationId(userId, planning.getPlanId());
+            double totalProjectedValue = operations.stream().mapToDouble(PlannedOperation::getProjectedValue).sum();
+            FinancialPlanningDTO dto = new FinancialPlanningDTO( 
+                planning.getPlanId(),
+                planning.getUserId(),
+                planning.getDescription(),
+                planning.getPlanName(),
+                totalProjectedValue,
+                planning.getProjectedDate().toString(), // Convertir LocalDateTime a String
+                planning.getPersonalProject(),
+                operations
+            );
+            return dto;
+        }).collect(Collectors.toList());
+       // return repository.findByUserId(userId);
     }
 
     // 🔹 GET /api/financial-planning/user/{userId}/plan/{planId}
